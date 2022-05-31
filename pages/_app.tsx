@@ -7,14 +7,14 @@ import { EntriesProvider } from '../context/entries/EntriesProvider';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <UIProvider>
-      <EntriesProvider>
+    <EntriesProvider>
+      <UIProvider>
         <ThemeProvider theme={darkTheme}>
           <CssBaseline />
           <Component {...pageProps} />
         </ThemeProvider>
-      </EntriesProvider>
-    </UIProvider>
+      </UIProvider>
+    </EntriesProvider>
   )
 }
 
