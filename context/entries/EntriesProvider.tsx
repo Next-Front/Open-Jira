@@ -1,11 +1,33 @@
 import React, { useReducer } from "react";
+import { Entry } from "../../interfaces/entry";
 import { EntriesContext } from "./EntriesContext";
 import { entriesReducer } from "./entriesReducer";
 
 export interface EntriesState {
+  entries: Entry[]
 }
 
 const ENTRIES_STATE_INITIAL: EntriesState = {
+  entries: [
+    {
+      _id: "1",
+      createdAt: Date.now(),
+      description: "some description",
+      status: "pending",
+    },
+    {
+      _id: "2",
+      createdAt: Date.now() - 1000,
+      description: "some description 2",
+      status: "in-progress",
+    },
+    {
+      _id: "3",
+      createdAt: Date.now() - 100,
+      description: "some description for many entries",
+      status: "done",
+    }
+  ]
 }
 
 export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
