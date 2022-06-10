@@ -1,12 +1,19 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Box, Button, TextField } from '@mui/material'
 import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
+import { EntriesContext } from '../../context/entries/EntriesContext';
 
 const NewEntry = () => {
 
+  const { addEntry } = useContext(EntriesContext)
   const [isAdding, setIsAdding] = useState(false)
   const [textTask, setTextTask] = useState('')
+
+  const handleAdd = () => {
+    addEntry( textTask )
+    setIsAdding(false)
+  }
   
   return (
     <Box pb='10px'>
@@ -35,6 +42,7 @@ const NewEntry = () => {
                 color='primary'
                 endIcon={<SaveIcon />}
                 disabled={!textTask}
+                onClick={handleAdd}
               >
                 Save
               </Button>
