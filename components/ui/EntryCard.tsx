@@ -7,9 +7,21 @@ interface Props {
 }
 
 const EntryCard: FC<Props> = ({ entry: { description, _id, createdAt } }) => {
+
+  const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+    event.dataTransfer.setData('text', _id);
+  }
+
+  const onDragEnd = (event: React.DragEvent<HTMLDivElement>) => {
+    console.log(event);
+  }
+
   return (
     <Card
+      draggable
       sx={{ marginBottom: 1 }}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
     >
       <CardActionArea>
         <CardContent>

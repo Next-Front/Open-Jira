@@ -3,22 +3,24 @@ import { Box, Button, TextField } from '@mui/material'
 import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
 import { EntriesContext } from '../../context/entries/EntriesContext';
+import { UIContext } from '../../context/ui/UIContext';
 
 const NewEntry = () => {
 
-  const { addEntry } = useContext(EntriesContext)
-  const [isAdding, setIsAdding] = useState(false)
   const [textTask, setTextTask] = useState('')
+  const { addEntry } = useContext(EntriesContext)
+  const { setIsAddingEntry, isAddingEntry } = useContext(UIContext)
 
   const handleAdd = () => {
     addEntry( textTask )
-    setIsAdding(false)
+    setIsAddingEntry(false)
+    setTextTask('')
   }
   
   return (
     <Box pb='10px'>
       {
-        isAdding ? (
+        isAddingEntry ? (
           <>
             <TextField 
               fullWidth
@@ -33,7 +35,7 @@ const NewEntry = () => {
             <Box display='flex' justifyContent='space-between'>
               <Button
                 variant='text'
-                onClick={() => setIsAdding(false)}
+                onClick={() => setIsAddingEntry(false)}
               >
                 Cancelar
               </Button>
@@ -53,7 +55,7 @@ const NewEntry = () => {
             startIcon={<AddIcon />}
             fullWidth
             variant='outlined'
-            onClick={() => setIsAdding(!isAdding)}
+            onClick={() => setIsAddingEntry(!isAddingEntry)}
           >
             Add task
           </Button>

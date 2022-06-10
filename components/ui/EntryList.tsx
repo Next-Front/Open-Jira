@@ -10,14 +10,22 @@ interface Props {
 
 const EntryList: FC<Props> = ({ status }) => {
 
-  const { entries }  = useContext(EntriesContext)
+  const { entries, updateEntryStatus }  = useContext(EntriesContext)
 
   const entriesByStatus = useMemo(
     () => entries.filter(entry => entry.status === status), 
   [entries, status])
 
+  const onDropEntry = (event: React.DragEvent<HTMLDivElement>) => {
+    const id = event.dataTransfer.getData('text');
+    updateEntryStatus(id, status)
+  }
+
   return (
-    <div>
+    <div
+      onDrop={onDropEntry}
+      onDragOver={(event) => event.preventDefault()}
+    >
       <Paper 
         sx={{ 
           height: 'calc(100vh - 200px)', 

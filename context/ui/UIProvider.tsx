@@ -1,13 +1,15 @@
 import React, { useReducer } from "react";
 import { UIContext } from "./UIContext";
-import { uiReducer } from "./UIReducer";
+import { uiReducer } from "./uiReducer";
 
 export interface UIState {
-  sideOpen: boolean;
+  sideOpen     : boolean;
+  isAddingEntry: boolean;
 }
 
 const UI_STATE_INITIAL: UIState = {
-  sideOpen: false,
+  sideOpen     : false,
+  isAddingEntry: false,
 }
 
 export const UIProvider = ({children}: {children: React.ReactNode}) => {
@@ -18,11 +20,19 @@ export const UIProvider = ({children}: {children: React.ReactNode}) => {
     dispatch({ type: 'CHANGE_SIDEBAR' })
   }
 
+  const setIsAddingEntry = (isAddingEntry: boolean) => {
+    dispatch({ 
+      type: 'IS_ADDING_ENTRY', 
+      payload: isAddingEntry 
+    })
+  }
+
   return (
     <UIContext.Provider 
       value={{
         ...state,
-        toggleSidebar
+        toggleSidebar,
+        setIsAddingEntry
       }}
     >
       {children}

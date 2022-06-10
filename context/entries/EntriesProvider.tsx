@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { Entry } from "../../interfaces/entry";
+import { Entry, EntryStatus } from '../../interfaces/entry';
 import { EntriesContext } from "./EntriesContext";
 import { entriesReducer } from "./entriesReducer";
 import { uuid } from 'uuidv4';
@@ -27,11 +27,22 @@ export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
     })
   }
 
+  const updateEntryStatus = ( id: string, state: EntryStatus ) => {
+    dispatch({
+      type: 'UPDATE_ENTRY_STATUS',
+      payload: {
+        id,
+        status: state
+      }
+    })
+  }
+
   return (
     <EntriesContext.Provider 
       value={{
         ...state,
         addEntry,
+        updateEntryStatus
       }}
     >
       {children}
