@@ -46,7 +46,7 @@ const EntryCard: FC<Props> = ({ entry: { description, _id, createdAt, status } }
         <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Select
             value={valueSelect}
-            sx={{ width: 'auto', height: "30px" }}
+            sx={{ width: 'auto', height: "30px", fontSize: '13px' }}
             onChange={onSelectChange}
           >
             <MenuItem value="pending">Pending</MenuItem>

@@ -28,7 +28,7 @@ const EntryList: FC<Props> = ({ status }) => {
     >
       <Paper 
         sx={{ 
-          height: 'calc(100vh - 200px)', 
+          height: status === 'pending'? 'calc(100vh - 230px)' : 'calc(100vh - 180px)', 
           overflow: 'auto', 
           backgroundColor: 'transparent', 
           overflowX: 'hidden', 
