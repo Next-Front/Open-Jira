@@ -2,6 +2,7 @@ import { FC, useContext, useState } from 'react'
 import { Card, CardActionArea, CardActions, CardContent, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
 import { Entry, EntryStatus } from '../../interfaces/entry';
 import { EntriesContext } from '../../context/entries/EntriesContext';
+import { UIContext } from '../../context/ui/UIContext';
 
 interface Props {
   entry: Entry
@@ -12,14 +13,15 @@ const EntryCard: FC<Props> = ({ entry: { description, _id, createdAt, status } }
   const [activeDrag, setActiveDrag] = useState(false)
   const [valueSelect, setValueSelect] = useState(status)
   const { updateEntryStatus }  = useContext(EntriesContext)
+  const { setIsDragging }  = useContext(UIContext)
 
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
     event.dataTransfer.setData('text', _id);
     setActiveDrag(true)
+    setIsDragging(true)
   }
 
   const onDragEnd = (event: React.DragEvent<HTMLDivElement>) => {
-    console.log(event);
     setActiveDrag(false)
   }
 
@@ -33,7 +35,6 @@ const EntryCard: FC<Props> = ({ entry: { description, _id, createdAt, status } }
       draggable
       sx={{ 
         marginBottom: 1,
-        background: activeDrag ? '#494352' : '',
         opacity: 1,
       }}
       onDragStart={onDragStart}

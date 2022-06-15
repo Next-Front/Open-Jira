@@ -5,11 +5,13 @@ import { uiReducer } from "./uiReducer";
 export interface UIState {
   sideOpen     : boolean;
   isAddingEntry: boolean;
+  isDragging  : boolean;
 }
 
 const UI_STATE_INITIAL: UIState = {
   sideOpen     : false,
   isAddingEntry: false,
+  isDragging   : false,
 }
 
 export const UIProvider = ({children}: {children: React.ReactNode}) => {
@@ -27,12 +29,20 @@ export const UIProvider = ({children}: {children: React.ReactNode}) => {
     })
   }
 
+  const setIsDragging = (isDragging: boolean) => {
+    dispatch({ 
+      type: 'IS_DRAGGING', 
+      payload: isDragging 
+    })
+  }
+
   return (
     <UIContext.Provider 
       value={{
         ...state,
         toggleSidebar,
-        setIsAddingEntry
+        setIsAddingEntry,
+        setIsDragging
       }}
     >
       {children}
