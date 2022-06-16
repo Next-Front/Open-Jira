@@ -3,4 +3,6 @@
 ```
 docker-compose up -d
 ```
-* el -d, significa __detached__
+* -d `__detached__`
+
+* `.env.template` configuration file 
