@@ -16,16 +16,23 @@ export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
 
   const [state, dispatch] = useReducer(entriesReducer, ENTRIES_STATE_INITIAL)
 
-  const addEntry = (entryDescription: string) => {
-    dispatch({
-      type: 'ADD',
-      payload: {
-        _id: uuid(),
-        description: entryDescription,
-        status: 'pending',
-        createdAt: Date.now()
-      }
-    })
+  const addEntry = async (entryDescription: string) => {
+    try {
+      const resp = await entriesApi.post<EntriesResponse>('/entries',{
+          description: entryDescription,
+          status: 'pending',
+          createdAt: Date.now()
+      })
+      
+      const { entry } = resp.data
+
+      dispatch({
+        type: 'ADD',
+        payload: entry!
+      })
+    } catch (error) {
+      console.log(error)
+    } 
   }
 
   const updateEntryStatus = ( id: string, state: EntryStatus ) => {
@@ -44,7 +51,7 @@ export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
       const { entries, message } = resp.data
       dispatch({
         type: 'INITIAL_LOAD',
-        payload: entries
+        payload: entries!
       })
     } catch (error) {
       console.log(error)

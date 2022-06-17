@@ -7,6 +7,9 @@ type Data = {
   message?: string
   entries?: IEntry[]
   error?: string
+} | {
+  message?: string
+  entry ?: IEntry
 }
 
 export default function handler (
@@ -44,7 +47,16 @@ const createEntry = async  (
 ) => {
   try {
     
-  } catch (error) {
-    
+    await db.connect();
+    const entry = await Entry.create(req.body)
+    return res.status(200).json({ 
+      message: 'OK',
+      entry,
+    })
+
+  } catch (error: any) {
+    return res.status(500).json({ message: 'Error', error: error.message })
+  } finally {
+    await db.disconnect();
   }
 }

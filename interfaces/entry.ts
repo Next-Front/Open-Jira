@@ -10,7 +10,8 @@ export type EntryStatus = 'pending' | 'in-progress' | 'done';
 
 export interface EntriesResponse {
   message: string;
-  entries: Entry[];
+  entries?: Entry[];
+  entry?: Entry;
 }
 
 export interface EntryList {
