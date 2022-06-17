@@ -4,6 +4,7 @@ import { EntriesContext } from '../../context/entries/EntriesContext';
 import { UIContext } from '../../context/ui/UIContext';
 import { EntryStatus } from '../../interfaces/entry'
 import EntryCard from './EntryCard'
+import styles from '../../styles/entry.module.css'
 
 interface Props {
   status: EntryStatus
@@ -28,10 +29,7 @@ const EntryList: FC<Props> = ({ status }) => {
     <div
       onDrop={onDropEntry}
       onDragOver={(event) => event.preventDefault()}
-      style={{
-        background: isDragging ? 'rgba(0, 0, 0, 0.2)' : '',
-        border: isDragging ? '1px dashed #e1e1e199' : '',
-      }}
+      className={`${isDragging ? styles.containerEntry : ''}`}
     >
       <Paper 
         sx={{ 

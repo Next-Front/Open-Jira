@@ -21,10 +21,6 @@ const EntryCard: FC<Props> = ({ entry: { description, _id, createdAt, status } }
     setIsDragging(true)
   }
 
-  const onDragEnd = (event: React.DragEvent<HTMLDivElement>) => {
-    setActiveDrag(false)
-  }
-
   const onSelectChange = (event: SelectChangeEvent<"pending" | "in-progress" | "done">) => {
     setValueSelect(event.target.value as EntryStatus)
     updateEntryStatus(_id, event.target.value as EntryStatus)
@@ -38,7 +34,6 @@ const EntryCard: FC<Props> = ({ entry: { description, _id, createdAt, status } }
         opacity: 1,
       }}
       onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
     >
       <CardActionArea>
         <CardContent>
@@ -46,9 +41,9 @@ const EntryCard: FC<Props> = ({ entry: { description, _id, createdAt, status } }
         </CardContent>
         <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Select
-            value={valueSelect}
-            sx={{ width: 'auto', height: "30px", fontSize: '13px' }}
+            value={status || valueSelect}
             onChange={onSelectChange}
+            sx={{ width: 'auto', height: "30px", fontSize: '13px' }}
           >
             <MenuItem value="pending">Pending</MenuItem>
             <MenuItem value="in-progress">In Progress</MenuItem>

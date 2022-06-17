@@ -1,8 +1,9 @@
-import React, { useReducer } from "react";
-import { Entry, EntryStatus } from '../../interfaces/entry';
+import React, { useEffect, useReducer } from "react";
+import { EntriesResponse, Entry, EntryStatus } from '../../interfaces/entry';
 import { EntriesContext } from "./EntriesContext";
 import { entriesReducer } from "./entriesReducer";
 import { uuid } from 'uuidv4';
+import { entriesApi } from "../../apis";
 export interface EntriesState {
   entries: Entry[]
 }
@@ -36,6 +37,23 @@ export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
       }
     })
   }
+
+  const getEntries = async () => {
+    try {
+      const resp = await entriesApi.get<EntriesResponse>('/entries')
+      const { entries, message } = resp.data
+      dispatch({
+        type: 'INITIAL_LOAD',
+        payload: entries
+      })
+    } catch (error) {
+      console.log(error)
+    } 
+  }
+
+  useEffect(() => {
+    getEntries()
+  }, [])
 
   return (
     <EntriesContext.Provider 

@@ -4,6 +4,7 @@ import { EntriesState } from "./EntriesProvider";
 type UIType = 
   | { type: 'ADD', payload: Entry }
   | { type: 'UPDATE_ENTRY_STATUS', payload: { id: string, status: EntryStatus } }
+  | { type: 'INITIAL_LOAD', payload: Entry[] };
 
 
 export const entriesReducer = ( state: EntriesState, action: UIType ): EntriesState => {
@@ -23,6 +24,11 @@ export const entriesReducer = ( state: EntriesState, action: UIType ): EntriesSt
       return {
         ...state,
         entries: [...state.entries],
+      }
+    case 'INITIAL_LOAD':
+      return {
+        ...state,
+        entries: action.payload,
       }
     default:
       return state;
