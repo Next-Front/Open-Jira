@@ -4,6 +4,7 @@ import { Entry, EntryStatus } from '../../interfaces/entry';
 import { EntriesContext } from '../../context/entries/EntriesContext';
 import { UIContext } from '../../context/ui/UIContext';
 import ContextMenu from './ContextMenu';
+import { formatDate } from '../../utils/formatDate';
 
 interface Props {
   entry: Entry
@@ -69,7 +70,7 @@ const EntryCard: FC<Props> = ({ entry: { description, _id, createdAt, status } }
             <MenuItem value="in-progress">In Progress</MenuItem>
             <MenuItem value="done">Done</MenuItem>
           </Select>
-          <Typography variant='body2' >hace 30 minutos</Typography>
+          <Typography variant='body2' >{formatDate(new Date(createdAt))}</Typography>
         </CardActions>
       </CardActionArea>
 
