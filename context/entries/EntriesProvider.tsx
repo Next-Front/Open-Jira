@@ -4,11 +4,13 @@ import { EntriesContext } from "./EntriesContext";
 import { entriesReducer } from "./entriesReducer";
 import { entriesApi } from "../../apis";
 export interface EntriesState {
-  entries: Entry[]
+  entries: Entry[],
+  activeToDelete: string,
 }
 
 const ENTRIES_STATE_INITIAL: EntriesState = {
-  entries: []
+  entries: [],
+  activeToDelete: '',
 }
 
 export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
@@ -67,6 +69,25 @@ export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
     } 
   }
 
+  const setActiveToDelete = (id: string) => {
+    dispatch({
+      type: 'SET_ACTIVE_TO_DELETE',
+      payload: id
+    })
+  }
+
+  const deleteEntry = async () => {
+    try {
+      await entriesApi.delete(`/entries/${state.activeToDelete}`)
+      dispatch({
+        type: 'DELETE_ENTRY',
+        payload: state.activeToDelete
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     getEntries()
   }, [])
@@ -76,7 +97,9 @@ export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
       value={{
         ...state,
         addEntry,
-        updateEntryStatus
+        updateEntryStatus,
+        deleteEntry,
+        setActiveToDelete
       }}
     >
       {children}

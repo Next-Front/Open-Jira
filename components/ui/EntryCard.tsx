@@ -1,8 +1,9 @@
-import { FC, useContext, useState } from 'react'
+import { FC, useContext, useEffect, useState } from 'react'
 import { Card, CardActionArea, CardActions, CardContent, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
 import { Entry, EntryStatus } from '../../interfaces/entry';
 import { EntriesContext } from '../../context/entries/EntriesContext';
 import { UIContext } from '../../context/ui/UIContext';
+import ContextMenu from './ContextMenu';
 
 interface Props {
   entry: Entry
@@ -10,14 +11,19 @@ interface Props {
 
 const EntryCard: FC<Props> = ({ entry: { description, _id, createdAt, status } }) => {
 
-  const [activeDrag, setActiveDrag] = useState(false)
   const [valueSelect, setValueSelect] = useState(status)
-  const { updateEntryStatus }  = useContext(EntriesContext)
-  const { setIsDragging }  = useContext(UIContext)
+  const { updateEntryStatus, setActiveToDelete}  = useContext(EntriesContext)
+
+  const { 
+    setIsDragging, 
+    setIsOpenContextMenu, 
+    setPointsContextMenu,  
+    isOpenContextMenu, 
+    pointsContextMenu 
+  }  = useContext(UIContext)
 
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
     event.dataTransfer.setData('text', _id);
-    setActiveDrag(true)
     setIsDragging(true)
   }
 
@@ -25,6 +31,19 @@ const EntryCard: FC<Props> = ({ entry: { description, _id, createdAt, status } }
     setValueSelect(event.target.value as EntryStatus)
     updateEntryStatus(_id, event.target.value as EntryStatus)
   }
+
+  const handleContextMenu = (event: any) => {
+    event.preventDefault();
+    setActiveToDelete(_id)
+    setPointsContextMenu({ x: event.pageX, y: event.pageY });
+    setIsOpenContextMenu(true);
+  }
+
+  useEffect(() => {
+    const handleClick = () => setIsOpenContextMenu(false);
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
+  }, []);
 
   return (
     <Card
@@ -34,6 +53,7 @@ const EntryCard: FC<Props> = ({ entry: { description, _id, createdAt, status } }
         opacity: 1,
       }}
       onDragStart={onDragStart}
+      onContextMenu={handleContextMenu}
     >
       <CardActionArea>
         <CardContent>
@@ -52,6 +72,11 @@ const EntryCard: FC<Props> = ({ entry: { description, _id, createdAt, status } }
           <Typography variant='body2' >hace 30 minutos</Typography>
         </CardActions>
       </CardActionArea>
+
+      <ContextMenu 
+        isOpenContextMenu={isOpenContextMenu}  
+        pointsContextMenu={pointsContextMenu}
+      />
     </Card>
   )
 }

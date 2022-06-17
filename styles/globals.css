@@ -17,3 +17,22 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.menuContext {
+  border-radius: 4px;
+  box-sizing: border-box;
+  position: fixed;
+  width: 200px;
+  background-color: #7e7e7e;
+  z-index: 1;
+  box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.1);
+}
+
+.menuItem:hover {
+  background-color: #555;
+  cursor: pointer;
+}
+
+.mr-1{
+  margin-right: 10px;
+}

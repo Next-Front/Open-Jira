@@ -13,7 +13,7 @@ interface Props {
 const EntryList: FC<Props> = ({ status }) => {
 
   const { entries, updateEntryStatus }  = useContext(EntriesContext)
-  const { isDragging, setIsDragging }  = useContext(UIContext)
+  const { isDragging, setIsDragging, isOpenContextMenu, pointsContextMenu }  = useContext(UIContext)
 
   const entriesByStatus = useMemo(
     () => entries.filter(entry => entry.status === status), 
@@ -53,6 +53,18 @@ const EntryList: FC<Props> = ({ status }) => {
           }
         </List>
       </Paper>  
+
+      {/* {isOpenContextMenu && (
+        <ul
+          className="menuContext"
+          style={{
+            top : pointsContextMenu.y,
+            left: pointsContextMenu.x,
+          }}
+        >
+          <li>Delete</li>
+        </ul>
+      )} */}
     </div>
   )
 }
