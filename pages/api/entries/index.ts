@@ -49,7 +49,7 @@ const createEntry = async  (
     
     await db.connect();
     const entry = await Entry.create(req.body)
-    return res.status(200).json({ 
+    return res.status(201).json({ 
       message: 'OK',
       entry,
     })

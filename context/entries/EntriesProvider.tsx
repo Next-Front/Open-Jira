@@ -2,7 +2,6 @@ import React, { useEffect, useReducer } from "react";
 import { EntriesResponse, Entry, EntryStatus } from '../../interfaces/entry';
 import { EntriesContext } from "./EntriesContext";
 import { entriesReducer } from "./entriesReducer";
-import { uuid } from 'uuidv4';
 import { entriesApi } from "../../apis";
 export interface EntriesState {
   entries: Entry[]
@@ -19,13 +18,12 @@ export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
   const addEntry = async (entryDescription: string) => {
     try {
       const resp = await entriesApi.post<EntriesResponse>('/entries',{
-          description: entryDescription,
-          status: 'pending',
-          createdAt: Date.now()
+        description: entryDescription,
+        status: 'pending',
+        createdAt: Date.now()
       })
-      
-      const { entry } = resp.data
 
+      const { entry } = resp.data
       dispatch({
         type: 'ADD',
         payload: entry!
@@ -35,14 +33,25 @@ export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
     } 
   }
 
-  const updateEntryStatus = ( id: string, state: EntryStatus ) => {
-    dispatch({
-      type: 'UPDATE_ENTRY_STATUS',
-      payload: {
-        id,
+  const updateEntryStatus = async ( id: string, state: EntryStatus ) => {
+    try {
+      const resp = await entriesApi.put<EntriesResponse>(`/entries/${id}`, {
         status: state
-      }
-    })
+      })
+      const { entry } = resp.data
+      
+      if(!entry) return
+
+      dispatch({
+        type: 'UPDATE_ENTRY_STATUS',
+        payload: {
+          id: entry._id,
+          status: entry.status
+        }
+      })
+    } catch (error) {
+      
+    }
   }
 
   const getEntries = async () => {
