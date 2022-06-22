@@ -5,6 +5,7 @@ import { EntriesContext } from '../../context/entries/EntriesContext';
 import { UIContext } from '../../context/ui/UIContext';
 import ContextMenu from './ContextMenu';
 import { formatDate } from '../../utils/formatDate';
+import { useRouter } from 'next/router';
 
 interface Props {
   entry: Entry
@@ -12,6 +13,7 @@ interface Props {
 
 const EntryCard: FC<Props> = ({ entry: { description, _id, createdAt, status } }) => {
 
+  const router = useRouter()
   const [valueSelect, setValueSelect] = useState(status)
   const { updateEntryStatus, setActiveToDelete}  = useContext(EntriesContext)
 
@@ -53,6 +55,7 @@ const EntryCard: FC<Props> = ({ entry: { description, _id, createdAt, status } }
         marginBottom: 1,
         opacity: 1,
       }}
+      onClick={() => router.push(`/entries/${_id}`)}
       onDragStart={onDragStart}
       onContextMenu={handleContextMenu}
     >

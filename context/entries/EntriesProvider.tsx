@@ -35,6 +35,27 @@ export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
     } 
   }
 
+  const updateEntry = async ( id: string, body: Entry ) => {
+    try {
+      const resp = await entriesApi.put<EntriesResponse>(`/entries/${id}`, {
+        ...body
+      })
+      const { entry } = resp.data
+      
+      if(!entry) return
+
+      dispatch({
+        type: 'UPDATE_ENTRY_STATUS',
+        payload: {
+          id: entry._id,
+          status: entry.status
+        }
+      })
+    } catch (error) {
+      
+    }
+  }
+
   const updateEntryStatus = async ( id: string, state: EntryStatus ) => {
     try {
       const resp = await entriesApi.put<EntriesResponse>(`/entries/${id}`, {
@@ -76,13 +97,14 @@ export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
     })
   }
 
-  const deleteEntry = async () => {
+  const deleteEntry = async ( id ?: string ) => {
     try {
-      await entriesApi.delete(`/entries/${state.activeToDelete}`)
+      await entriesApi.delete(`/entries/${ id || state.activeToDelete}`)
       dispatch({
         type: 'DELETE_ENTRY',
         payload: state.activeToDelete
       })
+      getEntries()
     } catch (error) {
       console.log(error)
     }
@@ -99,7 +121,9 @@ export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
         addEntry,
         updateEntryStatus,
         deleteEntry,
-        setActiveToDelete
+        setActiveToDelete,
+        getEntries,
+        updateEntry
       }}
     >
       {children}
