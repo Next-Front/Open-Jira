@@ -55,13 +55,12 @@ const EntryCard: FC<Props> = ({ entry: { description, _id, createdAt, status } }
         marginBottom: 1,
         opacity: 1,
       }}
-      onClick={() => router.push(`/entries/${_id}`)}
       onDragStart={onDragStart}
       onContextMenu={handleContextMenu}
     >
       <CardActionArea>
-        <CardContent>
-          <Typography sx={{ whiteSpace: 'pre-line' }} >{ description }</Typography>
+        <CardContent onClick={() => router.push(`/entries/${_id}`)}>
+          <Typography className='active_hover' sx={{ whiteSpace: 'pre-line' }} >{ description }</Typography>
         </CardContent>
         <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Select

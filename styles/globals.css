@@ -36,3 +36,7 @@
 .mr-1{
   margin-right: 10px;
 }
+
+.active_hover:hover {
+  text-decoration: underline;
+}

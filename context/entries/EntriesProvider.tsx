@@ -3,6 +3,7 @@ import { EntriesResponse, Entry, EntryStatus } from '../../interfaces/entry';
 import { EntriesContext } from "./EntriesContext";
 import { entriesReducer } from "./entriesReducer";
 import { entriesApi } from "../../apis";
+import { useSnackbar } from "notistack";
 export interface EntriesState {
   entries: Entry[],
   activeToDelete: string,
@@ -15,6 +16,7 @@ const ENTRIES_STATE_INITIAL: EntriesState = {
 
 export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
 
+  const { enqueueSnackbar } = useSnackbar()
   const [state, dispatch] = useReducer(entriesReducer, ENTRIES_STATE_INITIAL)
 
   const addEntry = async (entryDescription: string) => {
@@ -51,6 +53,16 @@ export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
           status: entry.status
         }
       })
+
+      enqueueSnackbar( 'Entry has been updated', {
+        variant: 'success',
+        autoHideDuration: 2000,
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'right'
+        }
+      })
+
     } catch (error) {
       
     }
