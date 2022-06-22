@@ -15,6 +15,10 @@ const ContextMenu:FC<IProps> = ({ isOpenContextMenu, pointsContextMenu }) => {
 
   if(!isOpenContextMenu) return null;
 
+  const handleDelete = () => {
+    deleteEntry(null)
+  }
+
   return (
     <>
       <List
@@ -30,7 +34,7 @@ const ContextMenu:FC<IProps> = ({ isOpenContextMenu, pointsContextMenu }) => {
         <ListItem className="menuItem">
           <EditSharpIcon className="mr-1" /> Edit
         </ListItem>
-        <ListItem className="menuItem" onClick={deleteEntry}>
+        <ListItem className="menuItem" onClick={handleDelete}>
           <ClearSharpIcon className="mr-1" color="error" /> Delete
         </ListItem>
       </List>
