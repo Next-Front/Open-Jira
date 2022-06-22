@@ -109,7 +109,7 @@ export const EntriesProvider = ({children}: {children: React.ReactNode}) => {
     })
   }
 
-  const deleteEntry = async ( id ?: string ) => {
+  const deleteEntry = async ( id ?: string | null ) => {
     try {
       await entriesApi.delete(`/entries/${ id || state.activeToDelete}`)
       dispatch({
